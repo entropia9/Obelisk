@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     const string ANIM_INITIAL = "obelisk_initial_sequence";
     const string ANIM_WRITINGS_APPEAR = "obelisk_writings_appear";
     const string ANIM_WRITINGS_GLOW = "obelisk_writings_glow";
+    const int MAX_VISIBLE_WORDS = 200;
 
     [SerializeField]
     GameObject storyTextBox;
@@ -20,7 +21,6 @@ public class UIManager : MonoBehaviour
 
     TextMeshProUGUI storyText;
     bool isTyping;
-    string currentlyTypedText;
 
     [SerializeField]
     float delay;
@@ -150,21 +150,12 @@ public class UIManager : MonoBehaviour
         if (text != null&& !isTyping)
         {
             isTyping = true;
-            currentlyTypedText = text;
-            
-            textbox.text = "";
+            textbox.text = text;
+            textbox.maxVisibleWords = 0;
             string[] words = text.Split(" ");
             for (int i=0; i<words.Length; i++)
             {
-                if (i == words.Length - 1)
-                {
-                    textbox.text += words[i];
-                }
-                else
-                {
-                    textbox.text += words[i] + " ";
-                }
-
+                textbox.maxVisibleWords++;
                 yield return new WaitForSeconds(delay);
             }
             
@@ -177,7 +168,7 @@ public class UIManager : MonoBehaviour
         if (isTyping)
         {
             StopCoroutine(lastTypeTextCoroutine);
-            storyText.text = currentlyTypedText;
+            storyText.maxVisibleWords = MAX_VISIBLE_WORDS;
             isTyping = false;
         }
         else 
