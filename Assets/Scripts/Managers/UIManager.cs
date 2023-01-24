@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     float timeToScale;
 
-    public Vector3 textBarTargetPosition=new Vector3();
+    public Vector3 textBarTargetPosition=new();
 
 
     [SerializeField]
@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator MoveTextBarCoroutine(RectTransform textBarTransform, Vector3 targetPosition, float timeToMove)
-    { Vector3 initialPosition = new();
+    { Vector3 initialPosition;
         initialPosition = textBarTransform.anchoredPosition;
         bool reachedDestination = false;
         float elapsedTime = 0f;
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator ScaleTextBarCoroutine(RectTransform textBarTransform, Vector3 targetScale, float timeToScale)
     {
-        Vector3 initialScale = new();
+        Vector3 initialScale;
         initialScale = textBarTransform.localScale;
         bool reachedScale = false;
 
@@ -139,7 +139,16 @@ public class UIManager : MonoBehaviour
 
 
         yield return new WaitForSeconds(delay);
-        NextButtonClicked();
+
+        if(StoryManager.Instance.currentParagraph!="")
+        {
+            TypeText(StoryManager.Instance.currentParagraph);
+        }
+        else
+        {
+            NextButtonClicked();
+        }
+        
     }
     void TypeText(string text) {
         lastTypeTextCoroutine=StartCoroutine(TypeTextCoroutine(text, storyText));

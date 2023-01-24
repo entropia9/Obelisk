@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EventManager : MonoBehaviour
+public class EventManager : Singleton<EventManager>
 {
     public delegate void NextButtonPressed();
     public static event NextButtonPressed NextButtonPress;

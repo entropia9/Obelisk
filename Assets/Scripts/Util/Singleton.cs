@@ -2,27 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton : MonoBehaviour
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static Singleton Instance { get; private set; }
-
-    public SoundManager soundManager { get; private set; }
-
-    public GameManager gameManager { get; private set; }
-
-
-    
+    public static T Instance { get; private set; }
     
     private void Awake()
     {
-        if(Instance!=null&&Instance!=this)
+        if(Instance!=null)
         {
             Destroy(this);
             return;
         }
-        Instance = this;
-        soundManager = GetComponentInChildren<SoundManager>();
-        gameManager = GetComponentInChildren<GameManager>();
+        Instance = this as T;
         DontDestroyOnLoad(gameObject);
 
 }
